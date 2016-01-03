@@ -45,17 +45,14 @@
 								Change password
 							</div>
 							<div class="panel-body">
-								<form>
-									<div class="form-group">
-    									<input type="password" class="form-control" id="changePasswordOld" name="changePasswordOld" placeholder="Old Password">
+								<form id="changePasswordForm" action="<?php echo $this->url('application/default', array('controller' => 'user', 'action' => 'changePassword')) ?>" method="post" enctype="multipart/form-data">
+									<div class="form-group" id="passwordGroup">
+    									<input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="New Password">
   									</div>
-									<div class="form-group">
-    									<input type="password" class="form-control" id="changePasswordNew1" name="changePasswordNew1" placeholder="New Password">
+									<div class="form-group" id="password2Group">
+    									<input type="password" class="form-control" id="newPassword2" name="newPassword2" placeholder="Retype new Password">
   									</div>
-									<div class="form-group">
-    									<input type="password" class="form-control" id="changePasswordNew2" name="changePasswordNew2" placeholder="Retype new Password">
-  									</div>
-									<button type="submit" class="btn btn-default pull-right">Submit</button>  									
+									<button class="btn btn-default pull-right" type="button" onclick="validate()">Submit</button>
 								</form>
 							</div>
 						</div>
@@ -65,3 +62,33 @@
 		</div>
 	</div>
 </div>
+
+<script>
+    function validate()
+    {
+        result = true;
+        errorMsg = 'Validation error';
+
+        if ($("#newPassword").val() == $("#newPassword2").val()){
+        	$("#password2Group").removeClass('has-error');
+        } else {
+        	errorMsg = "Passowrd don't match!";
+        	$('#password2Group').addClass('has-error');
+        	result = false;
+        }
+
+        if ($("#newPassword").val()){
+        	$("#passwordGroup").removeClass('has-error');
+        } else {
+        	errorMsg = "You need to write a password!";
+        	$('#passwordGroup').addClass('has-error');
+        	result = false;
+        }
+ 
+        if (!result) {
+             alert(errorMsg);
+        } else {
+        	$('#changePasswordForm').submit();
+        }
+    }
+</script>
