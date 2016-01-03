@@ -1,0 +1,100 @@
+<?php echo $this->doctype(); ?>
+<?php
+$children = $this->viewModel()->getCurrent()->getChildren();
+$child = $children[0];
+?>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <?php echo $this->headTitle('BookCloud')->setSeparator(' - ')->setAutoEscape(false) ?>
+
+        <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
+
+        <!-- Le styles -->
+        <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/public/images/favicon.ico'))
+//                        ->prependStylesheet($this->basePath() . '/public/css/bootstrap-responsive.min.css')
+                        ->prependStylesheet($this->basePath() . '/public/css/style.css')
+                        ->prependStylesheet($this->basePath() . '/public/css/phoca-flags.css')
+                        ->prependStylesheet($this->basePath() . '/public/BS3/css/bootstrap.min.css') ?>
+
+        <!-- Scripts -->
+        <?php echo $this->headScript()->prependFile($this->basePath() . '/public/js/html5.js', 'text/javascript', array('conditional' => 'lt IE 9',))
+                                      ->prependFile($this->basePath() . '/public/BS3/js/bootstrap.min.js')
+                                      ->prependFile($this->basePath() . '/public/js/jquery.min.js') ?>
+
+    </head>
+    <body>
+        <div class="navbar navbar-default navbar-fixed-top">
+                <div class="container">
+                    <div class="navbar-header">
+                    	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        	<span class="icon-bar"></span>
+                        	<span class="icon-bar"></span>
+                        	<span class="icon-bar"></span>
+                    	</button>
+                    	<a class="navbar-brand" href="<?php echo $this->url('home') ?>"><img src="<?php echo $this->basePath() . '/public/images/name.png'?>" style="height: 22px"></a>
+                    </div>
+                    <div class="collapse navbar-collapse">
+                    	<ul class="nav navbar-nav pull-left">
+                        	<li <?php echo ($child->nav == 1) ? 'class="active"' : ''; ?>>
+                            	<a href="<?php echo $this->url('application/default', array('controller'=>'index', 'action'=>'mybooks'));?>">My books</a>
+                        	</li>
+                        	<li <?php echo ($child->nav == 2) ? 'class="active"' : ''; ?>>
+	                            <a href="<?php echo $this->url('application/default', array('controller'=>'index', 'action'=>'allbooks'));?>">All books</a>
+                        	</li>
+                        	<li <?php echo ($child->nav == 3) ? 'class="active"' : ''; ?>>
+	                            <a href="<?php echo $this->url('application/default', array('controller'=>'config', 'action'=>'index'));?>">Config</a>
+                        	</li>
+                    	</ul>
+                    	<ul class="nav navbar-nav pull-right">
+                        	<li>
+                            	<a href="<?php echo $this->url('application/default', array('controller'=>'user', 'action'=>'logout'));?>"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> sign-out</a>
+                        	</li>
+                    	</ul>
+                    </div>
+                </div>
+        </div>
+        
+        <div class="container">
+            <?php echo $this->content; ?>
+        </div> <!-- /container -->
+        
+        
+        <!-- Message Dialog -->
+        <div id="msgdlgModal" class="modal fade">
+			<div class="modal-dialog">
+				<div class="modal-content">
+  				<div class="modal-header">
+    				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    				<h3 id="msgdlgTitle"></h3>
+  				</div>
+  				<div class="modal-body">
+	    			<p id="msgdlgMsg">One fine body�</p>
+    				<input type="text" id="msgdlgAnswer" value="">
+  				</div>
+  				<div class="modal-footer">
+    				<a href="#" class="btn" data-dismiss="modal">Cancel</a>
+    				<a id="msgdlgBtn1" href="#" class="btn btn-primary">Ok</a>
+  				</div>
+  				</div>
+  			</div>
+		</div>
+        
+        
+        <?php echo $this->inlineScript() ?>
+    </body>
+    
+	<script>
+		function showdlg(title, msg, func, ans){
+			$('#msgdlgTitle').html(title);
+			$('#msgdlgMsg').html(msg);
+			if (ans) {
+				$('#msgdlgAnswer').show();
+			} else {
+				$('#msgdlgAnswer').hide(); }
+			$('#msgdlgBtn1').unbind( "click" );
+			$('#msgdlgBtn1').click(function () {$('#msgdlgModal').modal('hide'); func($('#msgdlgAnswer').val());} );
+			$('#msgdlgModal').modal('show');
+		}
+	</script>
+</html>

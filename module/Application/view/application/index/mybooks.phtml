@@ -1,0 +1,132 @@
+<div class="row">
+<div class="col-md-3 bs-docs-sidebar">
+    <div>
+        <h3 style="color:#0070c0; font-weight: bold;">My books</h3>
+        <h4 style="color:#0070c0; font-weight: bold;">(<?php echo $size ?>) books selected</h4>
+        <hr style="margin-bottom:10px;">
+    </div>
+       
+    <div style="background-color: white; position: relative; color:#0088cc; font-weight: bold; margin-bottom: 10px;">
+        Search by key word
+    	<form method="get" action="<?php echo $url ?>">
+        	<input type="search" class="form-control" name="akey" placeholder="Search..." style="border-radius:20px;">
+    	</form>
+    </div>
+    
+    <div style="background-color: white; position: relative; color:#0088cc;">
+    	<div style="font-weight: bold;">
+        	Filter by attribute
+        </div>
+    	<ul class="nav nav-pills nav-stacked" style="padding-bottom: 10px;">  
+    	<?php foreach ($avParams as $key => $value): ?>
+        	<li>  
+            	<a href="#"  class="dropdown-toggle" data-toggle="dropdown" style="padding: 8px 12px; margin: 2px 0px;"><?php echo $key ?></a>
+            	<ul class="nav nav-sub-pills">
+                	<?php foreach ($value as $subValue): ?>
+                    	<li><a href="<?php echo $url . '?a' . strtolower($key) . '=' . $subValue[strtolower($key)] ?>"><?php echo $subValue[strtolower($key)] . ' (' . $subValue['count'] . ')' ?></a></li>
+                	<?php endforeach;?>
+            	</ul>
+        	</li>
+    	<?php endforeach; ?>     
+    	</ul>  
+    </div>
+    
+    
+    <div style="background-color: white; position: relative; color:#0088cc; font-weight: bold;">
+        Drop filter
+    </div>
+        
+    <ul class="nav nav-pills nav-stacked">
+    <?php if (is_array($filters)) { foreach ($filters as $key => $value): ?>
+        <?php if (is_array($value)){ ?>
+            <?php foreach ($value as $subValue): ?>
+                <li><a href="<?php echo $url . '?d' . $key . '=' . $subValue;?>" style="padding: 8px 12px; margin: 2px 0px;"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> <?php echo $key . ': ' ?><?php echo $subValue;?></a></li>
+            <?php endforeach; ?>
+        <?php } else { ?>
+            <li><a href="<?php echo $url . '?d' . $key . '=' . $value;?>" style="padding: 8px 12px; margin: 2px 0px;"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> <?php echo $key . ': ' ?><?php echo $value;?></a></li>
+        <?php } ?>
+    <?php endforeach; } ?>
+    </ul>
+</div>
+
+<div class="col-md-9">
+<a href=#  class="btn btn-primary" style="position:relative; float: Right; margin:10px 0" onclick="chooseFile()"><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Add new book</a>
+
+<div <?php if ($size != 0) echo 'style="display:none"'; ?>>
+	<table class="table">
+		<tr><td>
+			<strong>No books found!</strong> 
+		</td></tr>
+	</table>
+</div>
+
+<div <?php if ($size == 0) echo 'style="display:none"'; ?>>
+	<table class="table">
+		<tr>
+    		<th>Cover</th>
+    		<th>Book</th>
+    		<th>Author</th>
+    		<th>&nbsp;</th>
+		</tr>
+		<?php foreach ($books as $book) : ?>
+		<tr>
+    		<td>
+    			<a href="<?php echo $this->url('application/default', array('controller' => 'index', 'action' => 'bookview', 'id' => $book['book_id']));?>">
+        			<img class="img-thumbnail" src="<?php echo $this->url('files', array('action' => 'image', 'arg1' => 'thumb', 'arg2' => $book['book_id']));?>" style="height:80px">
+    			</a>    
+    		</td>
+    		<td>
+        		<a href="<?php echo $this->url('application/default', array('controller' => 'index', 'action' => 'bookview', 'id' => $book['book_id']));?>"><b><?php echo $this->escapeHtml($book['title']);?></b></a>
+        		<?php if ($book['serie']){ echo '<br>' . $this->escapeHtml($book['serie'] . ' (' . $book['volume'] . ')'); }?>
+        		<br><span class="phoca-flag <?php echo $this->escapeHtml($book['language']);?>"></span>
+    		</td>
+    		<td>
+        		<?php echo $this->escapeHtml($book['author']);?>
+    		</td>
+    		<td>
+        		<a href="<?php echo $this->url('application/default', array('controller' => 'index', 'action' => 'bookedit', 'id' => $book['book_id']))?>">Edit</a> | 
+        		<a href=# onclick="showdlg(
+  	  				'Confirmation',
+  	  				'Are you sure you want to delete [<?php echo $this->escapeHtml($book['title']);?>]?',
+  	  				function () {
+  	  					window.location.href = '<?php echo $this->url('application/default', array('controller' => 'index', 'action' => 'bookdelete', 'id' => $book['book_id']))?>';
+					},
+  	  	  			false 
+	  				);">Delete</a><br>
+        		<a href="<?php echo $this->url('application/default', array('controller' => 'index', 'action' => 'bookedit', 'id' => $book['book_id']))?>" data-toggle="tooltip" title="incomplete registration" style="display: <?php echo ($book['status'] == 'ok' ? 'none' : 'inline'); ?>"><img src="<?php echo $this->basepath() . '/public/images/warning.png'?>" style="max-height: 30px"></a>
+    		</td>
+		</tr>
+		<?php endforeach; ?>
+	</table>
+	<div style="text-align: center">
+		<nav>
+  			<ul class="pagination">
+  				<?php foreach ($pages as $page): ?>
+    				<li class="<?php echo $page['class']; ?>"><a href="<?php echo $page['href']; ?>"><?php echo $page['name']; ?></a></li>
+  				<?php endforeach; ?>
+  			</ul>
+		</nav>
+	</div>
+</div>
+
+</div>
+</div>
+
+<div style="height:0px;overflow:hidden">
+   <form action="<?php echo $this->url('application/default', array('controller' => 'index', 'action' => 'bookAdd')) ?>" method="post" enctype="multipart/form-data">
+       <input type="file" id="fileInput" name="fileInput" onchange="javascript:this.form.submit();" />
+   </form>
+</div>
+<script>
+$("input[name='fileInput']").change(function() { this.form.submit(); });
+function chooseFile() {
+    $("#fileInput").click();
+}
+
+function bookDelete(btn, ans, URL)
+{
+	if (btn == 1){
+		window.location.href = URL;
+	}
+}
+</script>

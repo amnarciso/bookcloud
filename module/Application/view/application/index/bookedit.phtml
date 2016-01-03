@@ -1,0 +1,311 @@
+<form id="book_form" action="<?php echo $this->url('application/default', array('controller' => 'index', 'action' => 'booksubmit')) ?>" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="book_id" id="book_id" value="<?php echo $this->escapeHtml($book->book_id);?>">
+    <div style="height:0px;overflow:hidden">
+        <input type="file" name="file" id="file" accept="image/jpeg" onchange="readURL(this)"><br>
+    </div>
+    
+    <div class="row">
+    <div class="col-md-4 col-md-offset-1">
+    
+        <a class="btn btn-default btn-xs" onclick="$('#file').click();" style="border-radius: 0px; margin: 0px; padding: 0px 5px">Change cover
+        </a><a class="btn btn-default btn-xs" onclick="clearCover();" style="border-radius: 0px; margin: 0px; padding: 0px 5px">Reset cover</a><br>
+    	<img id="cover" src="<?php echo $this->url('files', array('controller' => 'files', 'action' => 'image', 'arg1' => 'reg', 'arg2' => $book->book_id)); ?>" class="img-thumbnail">
+     
+    </div>
+    <div class="col-md-3">
+		<div id="title_grp" class="form-group" style="margin-bottom: 0px">
+        	<label for="title"><b>Title:</b></label>
+        	<input class="form-control" type="text" name="title" id="title" value="<?php echo $this->escapeHtml($book->title);?>" required="required"><br>
+    	</div>
+    	
+    	
+    	<div class="form-group" style="margin-bottom: 0px">
+    		<label for="author">Author:</label><br>(Select from the list or add new)
+    		<div class="input-group">
+    			<input class="form-control" id="find_author" type="text" value="<?php echo $this->escapeHtml($book->author);?>" placeholder="Author">
+  				<div class="btn input-group-addon" onclick="addAuthor()">new</div>
+  			</div>
+		</div>
+		
+		<div class="form-group" style="margin-bottom: 0px">
+        	<select id="list_author" class="form-control" size="5" onchange="
+        			$('#author').val($(this).val());
+        			$('#author_grp').removeClass('error').addClass('success');
+  	  	  		">
+  	  	  	</select>
+        </div>
+        
+		<div id="author_grp" class="form-group <?php echo ($book->status == 'ok' ? '' : 'error') ?>"  style="margin-bottom: 0px">
+        	<input class="form-control" type="text" name="author" id="author" value="<?php echo ($book->status == 'ok' ? $this->escapeHtml($book->author) : '');?>" required="required" readonly placeholder="Author"><br>
+    	</div>
+        
+		<div class="form-group" style="margin-bottom: 0px">
+    		<label for="serie"><b>Serie:</b></label>
+        	<select class="form-control" name="serie" id="serie" onchange="changeSerie(this)">
+            	<option value="">Stand alone book</option>
+            	<option disabled>----------</option>
+            	<?php foreach ($series as $serie) : ?>
+                	<option value="<?php echo $this->escapeHtml($serie['serie']);?>"><?php echo $this->escapeHtml($serie['serie']);?></option>
+            	<?php endforeach; ?>
+            	<option disabled>----------</option>
+            	<option value="-1">Other...</option>
+        	</select>
+        	<input class="form-control" type="text" name="other_serie" id="other_serie" value="" disabled placeholder="Other"><br>
+		</div>
+		
+		<div class="form-group" style="margin-bottom: 0px">
+        	<label for="volume">Volume:</label>
+        	<input class="form-control" type="number" name="volume" id="volume" value="<?php echo $this->escapeHtml($book->volume);?>" min="1" disabled><br>
+        </div>
+    	
+    </div>
+    <div class="col-md-3">
+
+        <div id="genre_grp" class="form-group">
+    		<label for="genre[]">Genre:</label><br>(Select all that apply)
+    		<div class="input-group">
+    			<select name="genre[]" id="genre" multiple size="5" class="form-control">
+	            	<?php foreach ($genres as $genre) : ?>
+                		<option value="<?php echo $this->escapeHtml($genre['genre']);?>"><?php echo $this->escapeHtml($genre['genre']);?></option>
+            		<?php endforeach; ?>
+        		</select>
+        		<div class="btn btn-default input-group-addon" type='button' onclick='showdlg("New genre","New genre:", function (ans) { $("#genre").append($("<option></option>").attr("value",ans).html(ans)); }, true);'>+</div><br>
+        	</div>
+    	</div>
+    	
+ 		<div class="form-group" style="margin-bottom: 0px">
+ 	    	<label for="year"><b>Publication year:</b></label>
+    	    <input class="form-control" type="number" name="year" id="year" value="<?php echo $this->escapeHtml($book['year']);?>" min="0"><br>
+	  	</div>
+	  			
+ 		<div class="form-group" style="margin-bottom: 0px">
+	  		<label for="language"><b>Language:</b></label>
+        	<select class="form-control" name="language" id="language" onchange="changeLanguage(this)">
+            	<?php foreach ($languages as $language) : ?>
+                	<option value="<?php echo $this->escapeHtml($language['language']);?>"><?php echo $this->escapeHtml($language['language']);?></option>
+            	<?php endforeach; ?>
+            	<option value="-1">Other...</option>
+        	</select>
+        	<input class="form-control" type="text" name="other_language" id="other_language" value="" disabled placeholder="Other"><br>
+        </div>
+        
+        <div id="sinopse_grp" class="form-group">
+        	<label for="sinopse"><b>Sinopse:</b></label>
+        	<textarea class="form-control" name="sinopse" id="sinopse" rows="4"><?php echo $this->escapeHtml($book->sinopse);?></textarea>
+		</div>    
+    
+        <button class="btn btn-primary" type="button" onclick="validate()">Salvar</button>
+        <button class="btn btn-default" type="button" onclick="searchBook()">Import</button>
+        
+    </div>
+    </div>
+</form>
+
+
+<!-- Meta data select dialog -->
+<div id="metaDataModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3>Select the book</h3>
+  			</div>
+  			<div class="modal-body">
+				<select id="bookList" size="5" class="input-block-level">
+				</select>
+  			</div>
+  			<div class="modal-footer">
+    			<button class="btn" data-dismiss="modal">Cancel</button>
+    			<button class="btn btn-primary" onclick="importBook()">Ok</button>
+  			</div>
+  		</div>
+  	</div>
+</div>
+
+
+<script>
+	function importBook()
+	{
+		$.getJSON('https://www.googleapis.com/books/v1/volumes/' + $("#bookList :selected").val(), function(data) {
+			$('#title').val(data["volumeInfo"]["title"]);
+			$('#find_author').val(data["volumeInfo"]["authors"][0]);
+			$('#sinopse').val($.trim(data["volumeInfo"]["description"]));
+			$('#year').val(data["volumeInfo"]["publishedDate"].substring(0,4));		
+		});
+		$('#metaDataModal').modal('hide');
+	}
+	
+	function searchBook()
+	{
+		$.getJSON('https://www.googleapis.com/books/v1/volumes?q=intitle:' + $('#title').val() + '+inauthor:' + $('#find_author').val() + '&langRestrict=' + $("#language :selected").val(), function(data) {
+			$('#bookList').html('');
+			$.each( data['items'], function( key, val ) {
+				var option = $('<option value="' + val['id'] + '">' + val['volumeInfo']['authors'][0] + ' - ' + val['volumeInfo']['title'] + '</option>');
+				$('#bookList').append(option);
+			});
+			$('#metaDataModal').modal('show');
+		});
+	}
+
+    function clearCover(){
+        $('#cover').attr('src', '<?php echo $this->url('files', array('controller' => 'files', 'action' => 'image', 'arg1' => 'reg', 'arg2' => $book->book_id)); ?>');
+        $('#file').replaceWith($('#file').clone());
+    }
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#cover')
+                    .attr('src', e.target.result)
+                    .height(550)
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            $('#cover').attr('src', '<?php echo $this->url('files', array('action' => 'image', 'arg1' => 'reg', 'arg2' => $book->book_id)); ?>');
+        }
+    }
+
+    $(function() {
+    	setInterval(function() {
+        	if ($('#find_author').data('oldVal') != $('#find_author').val()) {
+        		$('#find_author').data('oldVal', $('#find_author').val());
+
+        		$("#list_author").load('<?php echo $this->url('application/default', array('controller' => 'index', 'action' => 'authors')) . '?key=' ?>' + encodeURIComponent($('#find_author').val()));
+    		}
+    	}, 100);
+
+        if ("<?php echo $this->escapeHtml($book->serie);?>" != "")
+        {
+            $("#serie").val("<?php echo $this->escapeHtml($book->serie);?>");
+            $("#volume").removeAttr('disabled');
+        }
+
+    	$("#language").val("<?php echo $this->escapeHtml($book->language);?>");
+        
+        var dataarray = [
+        	             <?php foreach ($book_genres as $book_genre) : ?>
+        	                 "<?php echo $this->escapeHtml($book_genre['genre']);?>",
+        	             <?php endforeach; ?>
+        	             ];
+        $("#genre").val(dataarray);
+//        $("#genre").multiselect("refresh");
+    });
+
+    function changeSerie(elem)
+    {
+    	if (!elem.selectedIndex) 
+    	{
+    		document.getElementById('volume').disabled = true;
+    		document.getElementById('volume').value = '1';
+    	} else {
+    		document.getElementById('volume').disabled = false;
+        }
+
+
+    	if (elem.options[elem.selectedIndex].value == "-1")
+    	{
+    		document.getElementById('other_serie').disabled = false;
+    	} else {
+    		document.getElementById('other_serie').disabled = true;
+    		document.getElementById('other_serie').value = '';
+    	}
+    }
+    
+    function changeLanguage(elem)
+    {
+    	if (elem.options[elem.selectedIndex].value == "-1")
+    	{
+    		document.getElementById('other_language').disabled = false;
+    	} else {
+    		document.getElementById('other_language').disabled = true;
+    		document.getElementById('other_language').value = '';
+    	}
+    }
+
+    function addAuthor()
+    {
+        if ($('#find_author').val().indexOf(",") == -1)
+        {
+    		showdlg(
+  	  			'Confirmation',
+  	  			'Are you sure you want to add \'<b>' + $('#find_author').val() + '</b>\' to the list of Authors?',
+  	  			function () {
+  	  	  			$('#author').val($('#find_author').val()); 
+  	  	  			$('#author_grp').removeClass('error').addClass('success');
+  	  	  			} 
+	  			);
+        } else {
+    		showdlg(
+    	    	'Warning!',
+    	    	'We expect "[first name] [last name]" format<br><b>Can we suggest the correction?</b>',
+    	    	function () {
+    	    		var text = $('#find_author').val();
+    	            var comma = text.indexOf(",");
+    	    		$('#find_author').val(text.substring(comma + 2) + ' ' + text.substring(0,comma));
+					}
+    	    	);
+        }
+    }
+
+    function validate()
+    {
+        result = true;
+        if ($("#title").val()){
+        	$("#title_grp").removeClass('error');
+        } else {
+        	$('#title_grp').addClass('error');
+        	result = false;
+        }
+
+        if ($("#author").val()){
+        	$("#author_grp").removeClass('error').addClass('success');
+        } else {
+        	$('#author_grp').removeClass('success').addClass('error');
+        	result = false;
+        }
+                
+        if (($("#serie").val() == -1) && (!$("#other_serie").val())){
+        	$('#other_serie_grp').addClass('error');
+        	result = false;
+        } else {
+            $("#other_serie_grp").removeClass('error');
+        }
+
+        if (($("#serie").val()) && (!$("#volume").val())){
+        	$('#volume_grp').addClass('error');
+        	result = false;
+        } else {
+            $("#volume_grp").removeClass('error');
+        }
+
+        if ($("#genre").val()){
+            $("#genre_grp").removeClass('error');
+		} else {
+        	$('#genre_grp').addClass('error');
+        	result = false;
+        }
+
+        if (($("#language").val() == -1) && (!$("#other_language").val())){
+        	$('#other_language_grp').addClass('error');
+        	result = false;
+        } else {
+            $("#other_language_grp").removeClass('error');
+        }
+
+        if ($("#sinopse").val()){
+            $("#sinopse_grp").removeClass('error');
+		} else {
+        	$('#sinopse_grp').addClass('error');
+        	result = false;
+        }
+
+        if (!result) {
+             alert('Please fill in all fields');
+        } else {
+        	$('#book_form').submit();
+        }
+    }
+</script>

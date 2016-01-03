@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
+  	<div class=" panel panel-default">
+  		<div class="panel-heading" style="font-size: 16px; font-weight:bold;" >
+  			<div style="top: -4px; position: relative">
+  				<a class="btn btn-default btn-sm pull-right" href="<?php echo $this->url("files", array('action' => 'epub', 'arg1' => $book->book_id))?>"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span></a>
+  			</div>
+  			<?php echo $book->title ?>
+  		</div>
+  		<div class="panel-body">
+  			<table>
+		  		<tr><td style="width: 40%; padding: 20px; vertical-align:top;">
+  					<img id="cover" src="<?php echo $this->url('files', array('action' => 'image', 'arg1' => 'reg', 'arg2' => $book->book_id)); ?>" class="img-thumbnail">
+  				</td><td style="width: 60%; padding: 20px; vertical-align:top;">
+		  			<table class="table">
+  						<tr><td style="font-weight:bold;">Title:</td><td><?php echo $book->title ?></td></tr>
+  			  			<tr><td style="font-weight:bold;">Serie:</td><td><?php echo (!$book->serie ? '-' : $book->serie . ' (' . $book->volume . ')') ?></td></tr>
+  						<tr><td style="font-weight:bold;">Language:</td><td><span class="phoca-flag <?php echo $book->language;?>"></span></td></tr>
+  			  			<tr><td style="font-weight:bold;">Author:</td><td><?php echo $book->author ?></td></tr>
+  			  			<tr><td style="font-weight:bold;">Genre:</td><td>
+	  			  			<?php foreach ($book_genres as $book_genre):?>
+  				  				<span class="label  label-primary"><?php echo $book_genre['genre']?></span>
+  				  			<?php endforeach;?>
+  			  			</td></tr>
+  			  			<tr><td style="font-weight:bold;">Publication year:</td><td><?php echo $book->year ?></td></tr>
+  						<tr><td colspan=2 style="text-align:justify;"><b>Sinopse:</b><br>
+	  						<?php echo $book->sinopse ?>
+  						</td></tr>
+  					</table>
+  				</td></tr>
+  			</table>
+  		</div>
+  	</div>
+  </div>
+</div>
