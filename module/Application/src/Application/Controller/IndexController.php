@@ -310,9 +310,9 @@ class IndexController extends AbstractActionController
     		$epub->saveCover($book->book_id, $imagine);
     
     		//Move EPUB to proper location 
-    		if (file_exists(getenv('UP_FOLDER') . $book->book_id . ".epub"))
-    			unlink(getenv('UP_FOLDER') . $book->book_id . ".epub");
-    		move_uploaded_file($_FILES["fileInput"]["tmp_name"], getenv('UP_FOLDER') . $book->book_id . ".epub");
+    		if (file_exists($this->getServiceLocator()->get('config')['uploadFolder'] . $book->book_id . ".epub"))
+    			unlink($this->getServiceLocator()->get('config')['uploadFolder'] . $book->book_id . ".epub");
+    		move_uploaded_file($_FILES["fileInput"]["tmp_name"], $this->getServiceLocator()->get('config')['uploadFolder'] . $book->book_id . ".epub");
     	
     	    //Redirect to BookEdit action
     	    return $this->redirect()->toRoute('application/default', array(
