@@ -254,51 +254,51 @@
     {
         result = true;
         if ($("#title").val()){
-        	$("#title_grp").removeClass('error');
+        	$("#title_grp").removeClass('has-error');
         } else {
-        	$('#title_grp').addClass('error');
+        	$('#title_grp').addClass('has-error');
         	result = false;
         }
 
         if ($("#author").val()){
-        	$("#author_grp").removeClass('error').addClass('success');
+        	$("#author_grp").removeClass('has-error').addClass('has-success');
         } else {
-        	$('#author_grp').removeClass('success').addClass('error');
+        	$('#author_grp').removeClass('has-success').addClass('has-error');
         	result = false;
         }
                 
         if (($("#serie").val() == -1) && (!$("#other_serie").val())){
-        	$('#other_serie_grp').addClass('error');
+        	$('#other_serie_grp').addClass('has-error');
         	result = false;
         } else {
-            $("#other_serie_grp").removeClass('error');
+            $("#other_serie_grp").removeClass('has-error');
         }
 
         if (($("#serie").val()) && (!$("#volume").val())){
-        	$('#volume_grp').addClass('error');
+        	$('#volume_grp').addClass('has-error');
         	result = false;
         } else {
-            $("#volume_grp").removeClass('error');
+            $("#volume_grp").removeClass('has-error');
         }
 
         if ($("#genre").val()){
-            $("#genre_grp").removeClass('error');
+            $("#genre_grp").removeClass('has-error');
 		} else {
-        	$('#genre_grp').addClass('error');
+        	$('#genre_grp').addClass('has-error');
         	result = false;
         }
 
         if (($("#language").val() == -1) && (!$("#other_language").val())){
-        	$('#other_language_grp').addClass('error');
+        	$('#other_language_grp').addClass('has-error');
         	result = false;
         } else {
-            $("#other_language_grp").removeClass('error');
+            $("#other_language_grp").removeClass('has-error');
         }
 
         if ($("#sinopse").val()){
-            $("#sinopse_grp").removeClass('error');
+            $("#sinopse_grp").removeClass('has-error');
 		} else {
-        	$('#sinopse_grp').addClass('error');
+        	$('#sinopse_grp').addClass('has-error');
         	result = false;
         }
 

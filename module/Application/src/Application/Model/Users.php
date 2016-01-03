@@ -52,6 +52,24 @@ class Users
             return null;
     }
 
+    public function setPassword($user_id, $newPassword)
+    {
+        //Initialize variables
+        $adapter = $this->sm->get('Zend\Db\Adapter\Adapter');
+        $sql = new Sql($adapter);
+        $bcrypt = new Bcrypt();
+            
+        //create query
+        $update = $sql->update('users_table')->set(array(
+                'password'   => $bcrypt->create($newPassword)
+            ))->where(array(
+                'user_id' => $user_id));
+            
+        //execute query
+        $sqlString = $sql->getSqlStringForSqlObject($update);
+        $adapter->query($sqlString, $adapter::QUERY_MODE_EXECUTE);
+    }
+
     /**
      * Execute login:
      *     -return true if successful
@@ -60,6 +78,7 @@ class Users
      * @param String $password
      * @return boolean
      */
+/*
     public function id_login($user_id, $password)
     {
     	$bcrypt = new Bcrypt();
@@ -75,7 +94,8 @@ class Users
         else
             return null;
     }
-   
+*/
+
 /*    
     public function encript()
     {

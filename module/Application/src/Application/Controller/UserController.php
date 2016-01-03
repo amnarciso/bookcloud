@@ -52,7 +52,36 @@ class UserController extends AbstractActionController
         		'action'     => 'index'
         ));
     }
-    
+
+    public function changePasswordAction()
+    {
+        //Initialize variables
+        $sm = $this->getServiceLocator();
+        $users = new Users($sm);
+        $user_session = new Container('user');
+
+        //Get parameters
+        $request = $this->getRequest($sm);
+        $newPassword = $request->getPost('newPassword');
+
+        //Redirecting if not logged
+        if (!$user_session->logged)
+            return $this->redirect()->toRoute('application/default', array(
+                'controller' => 'index',
+                'action'     => 'index'
+                ));
+
+        //Set new password
+        $users->setPassword($user_session->user->user_id, $newPassword);
+
+        //Return to config
+        return $this->redirect()->toRoute('application/default', array(
+            'controller' => 'index',
+            'action'     => 'index'
+            ));
+    }
+
+/*    
     public function encriptAction()
     {
     	$sm = $this->getServiceLocator();
@@ -64,4 +93,5 @@ class UserController extends AbstractActionController
         		'action'     => 'index'
         ));
     }
+*/
 }
