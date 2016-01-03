@@ -195,7 +195,7 @@ class IndexController extends AbstractActionController
     		//Change Picture
     		if ($file_sent)
     		{
-    			$epub = new EPUB(getenv('UP_FOLDER') . $book->book_id . ".epub", getenv('UP_FOLDER'));
+    			$epub = new EPUB($this->getServiceLocator()->get('config')['uploadFolder'] . $book->book_id . ".epub", $this->getServiceLocator()->get('config')['uploadFolder']);
     			$epub->changeCover($_FILES["file"]["tmp_name"]);
     			$imagine = $this->getServiceLocator()->get('my_image_service');
     			$epub->saveCover($book->book_id, $imagine);
@@ -293,7 +293,7 @@ class IndexController extends AbstractActionController
     	if ($file_ok)
     	{
     		//Get EPUB information
-    		$epub = new EPUB($_FILES["fileInput"]["tmp_name"]);
+    		$epub = new EPUB($_FILES["fileInput"]["tmp_name"], $this->getServiceLocator()->get('config')['uploadFolder']);
     		$book = new Book();
     		$epub->getBook($book);
     

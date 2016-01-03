@@ -10,9 +10,9 @@ class EPUB
     protected $id;
     protected $uploadPath;
     
-    public function __construct($epub_file)
+    public function __construct($epub_file, $uploadPath)
     {
-    	$this->uploadPath = getenv('UP_FOLDER');
+    	$this->uploadPath = $uploadPath;
         $this->id = uniqid();
         
         $filter     = new Decompress(array(

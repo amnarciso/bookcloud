@@ -9,4 +9,5 @@
 require 'init_autoloader.php';
 
 // Run the application!
+date_default_timezone_set('America/Sao_Paulo');
 Zend\Mvc\Application::init(require 'config/application.config.php')->run();
