@@ -145,7 +145,7 @@ class Users
         $adapter = $this->sm->get('Zend\Db\Adapter\Adapter');
         $sql = new Sql($adapter, 'users_table');
 
-        $update = $sql->update()->where(array('user_id' => $user['user_id']))->set(array_shift($user));
+        $update = $sql->update()->where(array('user_id' => $user->user_id))->set(array_shift($user));
         $sqlString = $sql->getSqlStringForSqlObject($update);
         $results = $adapter->query($sqlString, $adapter::QUERY_MODE_EXECUTE);   
 
