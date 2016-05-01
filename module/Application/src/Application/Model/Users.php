@@ -145,8 +145,9 @@ class Users
         $adapter = $this->sm->get('Zend\Db\Adapter\Adapter');
         $sql = new Sql($adapter, 'users_table');
 
+        $filter = array('user_id' => $user->user_id);
         $fields = $user->toArray();
-        $filter = array_shift($fields);
+        unset($fields['user_id']);
         unset($fields['email']);
         $update = $sql->update()->where($filter)->set($fields);
         $sqlString = $sql->getSqlStringForSqlObject($update);
