@@ -24,8 +24,8 @@ use Application\Model\Users;
 class ConsoleController extends AbstractActionController {
 
 	public function sendmailAction() {
-		echo 'start';
-		print 'start print';
+		echo 'start\n';
+		print 'start print\n';
 
 		//Initialize variables
         $sm = $this->getServiceLocator();
