@@ -82,7 +82,7 @@ class UserController extends AbstractActionController
     }
 
 
-    public function changeSubscriptions()
+    public function changeSubscriptionsAction()
     {
         //Initialize variables
         $sm = $this->getServiceLocator();
