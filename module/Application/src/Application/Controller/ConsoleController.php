@@ -22,12 +22,13 @@ use Application\Model\Users;
  *
  */
 class ConsoleController extends AbstractActionController {
-	echo "********************\n";
-	echo "sendmailAction START\n";
-	echo date('Y-m-d H:i:s e') . "\n";
-	echo "********************\n";
-
 	public function sendmailAction() {
+		//Print header for log
+		echo "********************\n";
+		echo "sendmailAction START\n";
+		echo date('Y-m-d H:i:s e') . "\n";
+		echo "********************\n";
+
 		//Initialize variables
         $sm = $this->getServiceLocator();
         $books = new Books($sm);
