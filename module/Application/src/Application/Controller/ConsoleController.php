@@ -35,9 +35,9 @@ class ConsoleController extends AbstractActionController {
 		
 		$userList = $users->listUsers("subscribe = 1")->toArray();
 
-		if (count($bookList) > 0){
+//		if (count($bookList) > 0){
 			$mailler->newsletterEmail($userList, $bookList, date("d/m/o"));
-		}
+//		}
 				
 		die();
 	}
