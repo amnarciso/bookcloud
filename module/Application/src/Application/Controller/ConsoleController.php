@@ -24,6 +24,8 @@ use Application\Model\Users;
 class ConsoleController extends AbstractActionController {
 
 	public function sendmailAction() {
+		echo 'start';
+
 		//Initialize variables
         $sm = $this->getServiceLocator();
         $books = new Books($sm);
@@ -31,9 +33,11 @@ class ConsoleController extends AbstractActionController {
 		$mailler = new Mailler($sm);
 
 		$lastDate = date("o-m-d", date_sub(new DateTime(),date_interval_create_from_date_string("7 days"))->getTimestamp());
+		var_dump($lastDate);
 		$bookList = $books->listBooks(array("sql" => "date >= '$lastDate'"))->toArray();	
 		
 		$userList = $users->listUsers("subscribe = 1")->toArray();
+		var_dump($userList);
 
 //		if (count($bookList) > 0){
 			$mailler->newsletterEmail($userList, $bookList, date("d/m/o"));
