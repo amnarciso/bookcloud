@@ -33,6 +33,7 @@ class ConsoleController extends AbstractActionController {
 		$mailler = new Mailler($sm);
 
 		$lastDate = date("o-m-d", date_sub(new DateTime(),date_interval_create_from_date_string("7 days"))->getTimestamp());
+		$lastDate = '2016-02-01';
 		var_dump($lastDate);
 		$bookList = $books->listBooks(array("sql" => "date >= '$lastDate'"))->toArray();	
 		
