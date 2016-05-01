@@ -37,11 +37,10 @@ class ConsoleController extends AbstractActionController {
 
 		//Get new books from last week
 		$lastDate = date("o-m-d", date_sub(new DateTime(),date_interval_create_from_date_string("7 days"))->getTimestamp());
-		$lastDate = '2016-02-01';
 		$bookList = $books->listBooks(array("sql" => "date >= '$lastDate'"))->toArray();	
 		
 		//Print list of new books
-		echo "\nLIST OF BOOKS:\n";
+		echo "LIST OF BOOKS:\n";
 		foreach ($bookList as $book) {
 			echo "\t" . $book['title'] . "\n";
 		}
@@ -50,14 +49,14 @@ class ConsoleController extends AbstractActionController {
 		$userList = $users->listUsers("subscribe = 1")->toArray();
 
 		//Print list of subscribed users
-		echo "\nLIST OF EMAILS:\n";
+		echo "LIST OF EMAILS:\n";
 		foreach ($userList as $user) {
 			echo "\t" . $user['email'] . "\n";
 		}
 
 		//Send mails if there is at least one new book
 		if (count($bookList) > 0){
-//			$mailler->newsletterEmail($userList, $bookList, date("d/m/o"));
+			$mailler->newsletterEmail($userList, $bookList, date("d/m/o"));
 		}
 		die();
 	}
