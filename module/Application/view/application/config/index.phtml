@@ -27,11 +27,11 @@
 								Manage subscriptions
 							</div>
 							<div class="panel-body">
-								<form>
+								<form id="changeSubscriptionsForm" action="<?php echo $this->url('application/default', array('controller' => 'user', 'action' => 'changeSubscriptions')) ?>" method="post" enctype="multipart/form-data">
 									<label>Check the subscritions you want to receive</label>
 									<div class="checkbox">
 										<label>
-											<input id="weeklyNews" name="weeklyNews" type="checkbox" <?php echo ($user->weeklynews == 1 ? 'checked' : '');?>> Weekly update about new books
+											<input id="weeklynews" name="weeklynews" type="checkbox" <?php echo ($user->weeklynews == 1 ? 'checked' : '');?>> Weekly update about new books
 										</label>
   									</div>
 									<button type="submit" class="btn btn-default pull-right">Submit</button>  									

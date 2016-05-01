@@ -81,6 +81,36 @@ class UserController extends AbstractActionController
             ));
     }
 
+
+    public function changeSubscriptions()
+    {
+        //Initialize variables
+        $sm = $this->getServiceLocator();
+        $users = new Users($sm);
+        $user_session = new Container('user');
+
+        //Get parameters
+        $request = $this->getRequest($sm);
+        $subscriptions = $request->getPost();
+
+        //Redirecting if not logged
+        if (!$user_session->logged)
+            return $this->redirect()->toRoute('application/default', array(
+                'controller' => 'index',
+                'action'     => 'index'
+                ));
+
+        //EDITA E ATUALIZA USER
+        $user_session->user->weeklynews = ($subscriptions['weeklynews'] ? 1 : 0);
+        $users->update($user_session->user->toArray());
+
+        //Return to config
+        return $this->redirect()->toRoute('application/default', array(
+            'controller' => 'index',
+            'action'     => 'index'
+            ));
+    }
+
 /*    
     public function encriptAction()
     {
