@@ -43,7 +43,7 @@ class ConsoleController extends AbstractActionController {
 		//Print list of new books
 		echo "\nLIST OF BOOKS:\n";
 		foreach ($bookList as $book) {
-			echo $book['title'] . "\n";
+			echo "\t" . $book['title'] . "\n";
 		}
 
 		//Get list of subscribed users
@@ -52,7 +52,7 @@ class ConsoleController extends AbstractActionController {
 		//Print list of subscribed users
 		echo "\nLIST OF EMAILS:\n";
 		foreach ($userList as $user) {
-			echo $user['email'] . "\n";
+			echo "\t" . $user['email'] . "\n";
 		}
 
 		//Send mails if there is at least one new book
