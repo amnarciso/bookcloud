@@ -46,7 +46,7 @@ class ConsoleController extends AbstractActionController {
 		}
 
 		//Get list of subscribed users
-		$userList = $users->listUsers("subscribe = 1")->toArray();
+		$userList = $users->listUsers("weeklynews = 1")->toArray();
 
 		//Print list of subscribed users
 		echo "LIST OF EMAILS:\n";
