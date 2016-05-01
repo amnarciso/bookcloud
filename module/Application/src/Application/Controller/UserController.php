@@ -102,7 +102,7 @@ class UserController extends AbstractActionController
 
         //EDITA E ATUALIZA USER
         $user_session->user->weeklynews = ($subscriptions['weeklynews'] ? 1 : 0);
-        $users->update($user_session->user->toArray());
+        $users->update($user_session->user);
 
         //Return to config
         return $this->redirect()->toRoute('application/default', array(
