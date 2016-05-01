@@ -51,9 +51,11 @@ class ConfigController extends AbstractActionController {
         //Load view
         return new ViewModel(array(
                 'nav'      => 3,
-                'token'    =>  $lastToken
+                'token'    =>  $lastToken,
+                'user'     => $this->user,
         ));
 	}
+
     public function refreshTokenAction() {
         $sm = $this->getServiceLocator();
         $tokens = new Tokens($sm);
