@@ -146,8 +146,8 @@ class Users
         $sql = new Sql($adapter, 'users_table');
 
         $fields = $user->toArray();
-        $filter = array_shift($fieldsvalue);
-        $update = $sql->update()->where($filter)->set($fieldsvalue);
+        $filter = array_shift($fields);
+        $update = $sql->update()->where($filter)->set($fields);
         $sqlString = $sql->getSqlStringForSqlObject($update);
         $results = $adapter->query($sqlString, $adapter::QUERY_MODE_EXECUTE);   
 
