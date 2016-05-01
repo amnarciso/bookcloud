@@ -41,11 +41,11 @@ class User
 	public function toArray()
 	{
 		return array(
-			'user_id' => $this->$user_id,
-			'email' => $this->$email,
-			'nickname' => $this->$nickname,
-			'status' => $this->$status,
-			'weeklynews' => $this->$weeklynews,
+			'user_id' => $this->user_id,
+			'email' => $this->email,
+			'nickname' => $this->nickname,
+			'status' => $this->status,
+			'weeklynews' => $this->weeklynews,
 			);
 	}
 }
