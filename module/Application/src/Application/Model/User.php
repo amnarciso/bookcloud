@@ -37,4 +37,15 @@ class User
 		$this->status  = (isset($data['status'])) ? $data['status'] : null;
 		$this->weeklynews  = (isset($data['weeklynews'])) ? $data['weeklynews'] : null;
 	}
+
+	public function toArray()
+	{
+		return array(
+			'user_id' => $this->$user_id;
+			'email' => $this->$email;
+			'nickname' => $this->$nickname;
+			'status' => $this->$status;
+			'weeklynews' => $this->$weeklynews;
+			);
+	}
 }
