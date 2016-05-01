@@ -25,6 +25,7 @@ class ConsoleController extends AbstractActionController {
 
 	public function sendmailAction() {
 		echo 'start';
+		print 'start print';
 
 		//Initialize variables
         $sm = $this->getServiceLocator();
@@ -41,7 +42,7 @@ class ConsoleController extends AbstractActionController {
 		var_dump($userList);
 
 //		if (count($bookList) > 0){
-			$mailler->newsletterEmail($userList, $bookList, date("d/m/o"));
+//			$mailler->newsletterEmail($userList, $bookList, date("d/m/o"));
 //		}
 				
 		die();
