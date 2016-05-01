@@ -147,6 +147,7 @@ class Users
 
         $fields = $user->toArray();
         $filter = array_shift($fields);
+        unset($fields['email']);
         $update = $sql->update()->where($filter)->set($fields);
         $sqlString = $sql->getSqlStringForSqlObject($update);
         $results = $adapter->query($sqlString, $adapter::QUERY_MODE_EXECUTE);   
