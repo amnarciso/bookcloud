@@ -103,14 +103,13 @@ class CatalogController extends AbstractActionController
 			$link->addAttribute('rel', 'start');
 			$link->addAttribute('title', 'Main Catalog');
 			$link->addAttribute('type', 'application/atom+xml;type=feed;profile=opds-catalog');
-			$link->addAttribute('href', $renderer->basePath() . "/catalog/{$hash}/" );
-//			$link->addAttribute('href', $renderer->url('catalog', array('hash' => $hash)));
+			$link->addAttribute('href', $renderer->url('catalog') . "/{$hash}/" );
 
 			$link = $xml->addChild('link');
 			$link->addAttribute('rel', 'breadcrumb');
 			$link->addAttribute('title', $renderer->escapehtml($path[count($path)-2]));
 			$link->addAttribute('type', 'application/atom+xml;type=feed;profile=opds-catalog');
-			$link->addAttribute('href', $renderer->url('catalog', array('hash' => $hash, 'index' => base64_encode(substr($index, 0, strrpos($index, ':'))))));
+			$link->addAttribute('href', $renderer->url('catalog') . "/{$hash}/" . urlencode(base64_encode(substr($index, 0, strrpos($index, ':')))));
 		}
 		
 		//Show list of available filters
@@ -141,7 +140,7 @@ class CatalogController extends AbstractActionController
 						$node->addChild('content', 'Filter books by ' . $filter_item['name'])->addAttribute('type', 'text');
 
 						$link = $node->addChild('link');
-						$link->addAttribute('href', $renderer->url('catalog', array('hash' => $hash, 'index' => base64_encode($index . ':' . $filter_item['name']))));
+						$link->addAttribute('href', $renderer->url('catalog') . "/{$hash}/" . urlencode(base64_encode($index . ':' . $filter_item['name'])));
 						$link->addAttribute('type', 'application/atom+xml;type=feed;profile=opds-catalog');
 		
 						$link = $node->addChild('link');
@@ -158,7 +157,7 @@ class CatalogController extends AbstractActionController
 			$node->addChild('content', 'Show books')->addAttribute('type', 'text');
 				
 			$link = $node->addChild('link');
-			$link->addAttribute('href', $renderer->url('catalog', array('hash' => $hash, 'index' => base64_encode($index . ':LIST'))));
+			$link->addAttribute('href', $renderer->url('catalog') . "/{$hash}/" . urlencode(base64_encode($index . ':LIST')));
 			$link->addAttribute('type', 'application/atom+xml;type=feed;profile=opds-catalog');
 				
 			$link = $node->addChild('link');
@@ -187,7 +186,7 @@ class CatalogController extends AbstractActionController
 				$node->addChild('content', $param['count'] . ' books available');
 			
 				$link = $node->addChild('link');
-				$link->addAttribute('href', $renderer->url('catalog', array('hash' => $hash, 'index' => base64_encode($index . ':' . $param[$param_name]))));
+				$link->addAttribute('href', $renderer->url('catalog') . "/{$hash}/" . urlencode(base64_encode($index . ':' . $param[$param_name])));
 				$link->addAttribute('type', 'application/atom+xml;type=feed;profile=opds-catalog');
 			}
 		}
@@ -220,7 +219,7 @@ class CatalogController extends AbstractActionController
 				$link->addAttribute('rel', 'previous');
 				$link->addAttribute('title', 'Previous Page');
 				$link->addAttribute('type', 'application/atom+xml;type=feed;profile=opds-catalog');
-				$link->addAttribute('href', $renderer->url('catalog', array('hash' => $hash, 'index' => base64_encode($index), 'page' => $page - 1)));
+				$link->addAttribute('href', $renderer->url('catalog') . "/{$hash}/" . urlencode(base64_encode($index)) . "/" . ($page - 1));
 			}
 			if ($page < $pageMax)
 			{
@@ -228,7 +227,7 @@ class CatalogController extends AbstractActionController
 				$link->addAttribute('rel', 'next');
 				$link->addAttribute('title', 'Next Page');
 				$link->addAttribute('type', 'application/atom+xml;type=feed;profile=opds-catalog');
-				$link->addAttribute('href', $renderer->url('catalog', array('hash' => $hash, 'index' => base64_encode($index), 'page' => $page + 1)));
+				$link->addAttribute('href', $renderer->url('catalog') . "/{$hash}/" . urlencode(base64_encode($index)) . "/" . ($page + 1));
 			}
 				
 			
@@ -253,7 +252,7 @@ class CatalogController extends AbstractActionController
 				$link->addAttribute('rel', 'http://opds-spec.org/cover');
 				
 				$link = $node->addChild('link');
-				$link->addAttribute('href', $renderer->url('files', array('action' => 'epub', 'arg1' => $hash, 'arg2' => $book['book_id'])));
+				$link->addAttribute('href', $renderer->url('files', array('action' => 'epub')) . "/{$hash}/" . $book['book_id']);
 				$link->addAttribute('type', 'application/epub+zip');
 				$link->addAttribute('rel', 'http://opds-spec.org/acquisition');
 				$link->addAttribute('title', 'Download this ebook as EPUB');
