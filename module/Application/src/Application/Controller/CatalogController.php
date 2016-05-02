@@ -103,7 +103,8 @@ class CatalogController extends AbstractActionController
 			$link->addAttribute('rel', 'start');
 			$link->addAttribute('title', 'Main Catalog');
 			$link->addAttribute('type', 'application/atom+xml;type=feed;profile=opds-catalog');
-			$link->addAttribute('href', $renderer->url('catalog', array('hash' => $hash)));
+			$link->addAttribute('href', $renderer->basePath() . "/catalog/{$hash}/" );
+//			$link->addAttribute('href', $renderer->url('catalog', array('hash' => $hash)));
 
 			$link = $xml->addChild('link');
 			$link->addAttribute('rel', 'breadcrumb');
