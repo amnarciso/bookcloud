@@ -97,7 +97,7 @@ class CatalogController extends AbstractActionController
 			$link->addAttribute('rel', 'search');
 			$link->addAttribute('title', 'Search Catalog');
 			$link->addAttribute('type', 'application/atom+xml;type=feed;profile=opds-catalog');
-			$link->addAttribute('href', $renderer->url('catalog') . "{$hash}/SEARCH:{searchTerms}");
+			$link->addAttribute('href', $renderer->url('catalog') . "/{$hash}/SEARCH:{searchTerms}");
 		} else {
 			$link = $xml->addChild('link');
 			$link->addAttribute('rel', 'start');
