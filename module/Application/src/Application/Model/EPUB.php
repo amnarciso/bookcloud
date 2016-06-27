@@ -44,31 +44,10 @@ class EPUB
     
     public function saveCover($book_id, $imagine)
     {
-        $xmlfile = findFile($this->uploadPath . 'temp/' . $this->id, "*.opf");
-//    	$xmlfile = findFile($this->uploadPath . 'temp/' . $this->id, 'content.opf');
-//        if (!$xmlfile)
-//        	$xmlfile = findFile($this->uploadPath . 'temp/' . $this->id, 'epb.opf');
-        
-        $values = simplexml_load_file($xmlfile);
-        $values->registerXPathNamespace('ns', current($values->getNamespaces(true)));
-        
-        $cover = $values->xpath("//ns:metadata/ns:meta[@name='cover']");
-        $cover = $cover[0];
-        $cover = $cover['content'];
-        $cover = current($cover);
-//      $cover = current($values->xpath("//ns:metadata/ns:meta[@name='cover']")[0]['content']);
-        
-        if (!preg_match("/\w+\.\w{3,4}?/", $cover))
-        {
-        	$cover = $values->xpath("//ns:manifest/ns:item[@id='" . $cover . "']");
-        	$cover = $cover[0];
-        	$cover = $cover['href'];
-        	$cover = current($cover);
-        }
-//      $cover = current($values->xpath("//ns:manifest/ns:item[@id='" . $cover . "']")[0]['href']);
-        $cover = end(explode("/",$cover));
-        $cover = findFile($this->uploadPath . 'temp/' . $this->id, $cover);
-        
+        //Get cover patch
+        $cover = $this->getCoverPath();
+
+        //If cover exists make thumb and regular copies
         if (file_exists($cover))
         {
         	$mode    = \Imagine\Image\ImageInterface::THUMBNAIL_INSET;
@@ -87,33 +66,16 @@ class EPUB
     
     public function changeCover($file_name)
     {
-        $xmlfile = findFile($this->uploadPath . 'temp/' . $this->id, "*.opf");
-//    	$xmlfile = findFile($this->uploadPath . 'temp/' . $this->id, 'content.opf');
-//        if (!$xmlfile)
-//        	$xmlfile = findFile($this->uploadPath . 'temp/' . $this->id, 'epb.opf');
-        
-        $values = simplexml_load_file($xmlfile);
-        $values->registerXPathNamespace('ns', current($values->getNamespaces(true)));
-        
-        $cover = $values->xpath("//ns:metadata/ns:meta[@name='cover']");
-        $cover = $cover[0];
-        $cover = $cover['content'];
-        $cover = current($cover);
-//      $cover = current($values->xpath("//ns:metadata/ns:meta[@name='cover']")[0]['content']);
+        //Get cover patch
+        $cover = $this->getCoverPath();
 
-        if (!preg_match("/\w+\.\w{3,4}?/", $cover))
+        //If cover file exists then delete it
+        if (file_exists($cover))
         {
-        	$cover = $values->xpath("//ns:manifest/ns:item[@id='" . $cover . "']");
-        	$cover = $cover[0];
-        	$cover = $cover['href'];
-        	$cover = current($cover);
+            unlink($cover);
         }
-//      $cover = current($values->xpath("//ns:manifest/ns:item[@id='" . $cover . "']")[0]['href']);
-        
-        $cover = end(explode("/",$cover));
-        $cover = findFile($this->uploadPath . 'temp/' . $this->id, $cover);
-        
-        unlink($cover);
+
+        //Replace old cover for the new one
         move_uploaded_file($file_name, $cover);
     }
     
@@ -138,6 +100,44 @@ class EPUB
     	 
     	if (file_exists($this->uploadPath . "thumb/" . $book_id . ".jpeg"))
     		unlink($this->uploadPath . "thumb/" . $book_id . ".jpeg");
+    }
+
+    private function getCoverPath() {
+        //Find opf file
+        $xmlfile = findFile($this->uploadPath . 'temp/' . $this->id, "*.opf");
+        
+        //Load opf as simplexml
+        $values = simplexml_load_file($xmlfile);
+        $values->registerXPathNamespace('ns', current($values->getNamespaces(true)));
+        
+        //Find metadata cover
+        $cover = current($values->xpath("//ns:metadata/ns:meta[@name='cover']")[0]['content']);
+
+        //If Metadata does not point to to file, loat manifest Item it points to
+        if (!preg_match("/\w+\.\w{3,4}?/", $cover))
+        {
+            //If manifest Item does not exist, creates one new
+            if (!$values->xpath("//ns:manifest/ns:item[@id='" . $cover . "']"))
+            {
+                $manifestNode = $values->xpath("//ns:manifest")[0];
+                $itemNode = $manifestNode->addChild("item");
+                $itemNode->addAttribute('id', "{$cover}");
+                $itemNode->addAttribute('media-type', 'image/jpeg');
+                $itemNode->addAttribute('href', 'cover.jpg');
+            }
+            //Load manifest Item
+            $cover = current($values->xpath("//ns:manifest/ns:item[@id='{$cover}']")[0]['href']);
+        }
+
+        //Build cover full path
+        preg_match("/.*\//", $xmlfile, $matches);
+        $cover = $matches[0] . $cover;
+
+        //Save changed opf file
+        $values->asXml($xmlfile);
+
+        //Return cover path
+        return $cover;
     }
 }
 
