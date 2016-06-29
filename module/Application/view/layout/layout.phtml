@@ -36,11 +36,11 @@ $child = $children[0];
                     </div>
                     <div class="collapse navbar-collapse">
                     	<ul class="nav navbar-nav pull-left">
+                            <li <?php echo ($child->nav == 2) ? 'class="active"' : ''; ?>>
+                                <a href="<?php echo $this->url('application/default', array('controller'=>'index', 'action'=>'allbooks'));?>">All books</a>
+                            </li>
                         	<li <?php echo ($child->nav == 1) ? 'class="active"' : ''; ?>>
                             	<a href="<?php echo $this->url('application/default', array('controller'=>'index', 'action'=>'mybooks'));?>">My books</a>
-                        	</li>
-                        	<li <?php echo ($child->nav == 2) ? 'class="active"' : ''; ?>>
-	                            <a href="<?php echo $this->url('application/default', array('controller'=>'index', 'action'=>'allbooks'));?>">All books</a>
                         	</li>
                         	<li <?php echo ($child->nav == 3) ? 'class="active"' : ''; ?>>
 	                            <a href="<?php echo $this->url('application/default', array('controller'=>'config', 'action'=>'index'));?>">Config</a>

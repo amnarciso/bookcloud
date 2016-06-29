@@ -47,7 +47,7 @@ class IndexController extends AbstractActionController
         if ($this->logged)
             return $this->redirect()->toRoute('application/default', array(
                 'controller' => 'index',
-                'action'     => 'mybooks'
+                'action'     => 'allbooks'
                 ));
                     
         $view = new ViewModel(array(
