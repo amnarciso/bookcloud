@@ -13,6 +13,7 @@ class User
 	public $nickname;
 	public $status;
 	public $weeklynews;
+	public $admin;
 	
 	/**
 	 * Class constructor receives a row of user_table
@@ -36,6 +37,7 @@ class User
 		$this->nickname  = (isset($data['nickname'])) ? $data['nickname'] : null;
 		$this->status  = (isset($data['status'])) ? $data['status'] : null;
 		$this->weeklynews  = (isset($data['weeklynews'])) ? $data['weeklynews'] : null;
+		$this->admin  = (isset($data['admin'])) ? $data['admin'] : null;
 	}
 
 	public function toArray()
@@ -46,6 +48,7 @@ class User
 			'nickname' => $this->nickname,
 			'status' => $this->status,
 			'weeklynews' => $this->weeklynews,
+			'admin' => $this->admin,
 			);
 	}
 }

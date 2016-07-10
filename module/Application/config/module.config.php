@@ -62,7 +62,7 @@ return array(
                     'default' => array(
                         'type'    => 'Segment',
                         'options' => array(
-                            'route'    => '[/:controller][/:action][/:id]',
+                            'route'    => '[/:controller][/:action][/:id][/:arg]',
                             'constraints' => array(
                                 'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
                                 'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
@@ -112,6 +112,7 @@ return array(
             'Application\Controller\Files' => 'Application\Controller\FilesController',
             'Application\Controller\Catalog' => 'Application\Controller\CatalogController',
             'Application\Controller\Config' => 'Application\Controller\ConfigController',
+            'Application\Controller\Admin' => 'Application\Controller\AdminController',
             'Application\Controller\Console' => 'Application\Controller\ConsoleController',
         ),
     ),

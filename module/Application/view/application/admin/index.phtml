@@ -1,0 +1,96 @@
+<div class="row">
+	<div class="col-md-10 col-md-offset-1">
+		<div class="panel panel-default">
+			<div class="panel-heading"  style="font-size: 16px; font-weight:bold;">
+				Admin
+			</div>
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								Manage users
+							</div>
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-md-6">
+						        		<div id="genre_grp" class="form-group">
+						    				<div class="input-group" style="width: 100%">
+						    					<select name="userListBox" id="userListBox" size="5" class="form-control">
+							    		        	<?php foreach ($usersList as $baseUser) : ?>
+						        		        		<option value="<?php echo $baseUser['user_id']?>"><?php echo ($baseUser['status']=='active' ? '&#9989;' : '&#9940;') .  "&nbsp;&nbsp;{$baseUser['nickname']} ({$baseUser['email']})";?></option>
+						        		    		<?php endforeach; ?>
+						        				</select>
+						        			</div>
+						    			</div>
+						    		</div>
+									<div class="col-md-6">
+										<div class="row">
+											<div class="col-md-4">
+												<button type="button" class="btn btn-default" style="width: 100%" onclick="$(location).attr('href', '<?php echo $this->url('application/default', array('controller' => 'admin', 'action' => 'login')) ?>/' + $('#userListBox').val());">Login</button>												
+											</div>
+											<div class="col-md-4">
+												<button id="userEnable" type="button" class="btn btn-default" style="width: 100%" onclick="$(location).attr('href', '<?php echo $this->url('application/default', array('controller' => 'admin', 'action' => 'status')) ?>/' + $('#userListBox').val());"></button>												
+											</div>
+											<div class="col-md-4">
+												<button type="button" class="btn btn-default" style="width: 100%">Pwd reset</button>												
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								Create user
+							</div>
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-md-6">
+										<div id="title_grp" class="form-group">
+								        	<input class="form-control" type="text" name="title" id="title" value="" required="required" placeholder="email"><br>
+								    	</div>
+									</div>
+									<div class="col-md-4">
+										<div id="title_grp" class="form-group">
+								        	<input class="form-control" type="text" name="title" id="title" value="" required="required" placeholder="nickname"><br>
+								    	</div>
+									</div>
+									<div class="col-md-2">
+										<button type="button" class="btn btn-default" style="width: 100%">Add</button>												
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	//List of users with details
+	var userList = {
+        	<?php foreach ($usersList as $baseUser) : ?>
+        		<?php echo "\"{$baseUser['user_id']}\""?>: <?php echo json_encode($baseUser);?>,
+    		<?php endforeach; ?>
+		};
+
+	//Auto change enable/disable button title
+	$("#userListBox").change(
+    	function() {
+        	$('#userEnable').html((userList[$('#userListBox').val()]['status'] == 'active' ? 'Disable' : 'Enable'));
+    	}
+	);
+
+	//Select first item on userListBox
+	$(function() {
+		$("#userListBox").val($("#userListBox option:first").val());
+       	$('#userEnable').html((userList[$('#userListBox').val()]['status'] == 'active' ? 'Disable' : 'Enable'));
+	});
+</script>

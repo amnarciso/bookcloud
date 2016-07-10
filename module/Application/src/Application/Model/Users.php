@@ -39,7 +39,7 @@ class Users
     	$bcrypt = new Bcrypt();
     	$adapter = $this->sm->get('Zend\Db\Adapter\Adapter');
         
-    	$selectString = 'select * from users_table where email="' . $email . '"';
+    	$selectString = "select * from users_table where email='{$email}' and status = 'active'";
         $results = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE)->toArray()[0];   
         
 //        throw new \Exception($results['password']);
@@ -119,13 +119,13 @@ class Users
     }
 */ 
 
-    public function listUsers($filter)
+    public function listUsers($filter = null)
     {
     	$adapter = $this->sm->get('Zend\Db\Adapter\Adapter');
     	 
     	$selectString = "select * from users_table" . ($filter ? " where {$filter}" : "");
     	$results = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
-    	return $results;
+    	return $results->toArray();
     }
 
     public function userDetails($user_id)

@@ -45,6 +45,11 @@ $child = $children[0];
                         	<li <?php echo ($child->nav == 3) ? 'class="active"' : ''; ?>>
 	                            <a href="<?php echo $this->url('application/default', array('controller'=>'config', 'action'=>'index'));?>">Config</a>
                         	</li>
+<?php if($child->user->admin == 1): ?>
+                            <li <?php echo ($child->nav == 4) ? 'class="active"' : ''; ?>>
+                                <a href="<?php echo $this->url('application/default', array('controller'=>'admin', 'action'=>'index'));?>">Admin</a>
+                            </li>
+<?php endif; ?>
                     	</ul>
                     	<ul class="nav navbar-nav pull-right">
                         	<li>
