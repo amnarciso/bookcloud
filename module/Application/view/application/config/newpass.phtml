@@ -1,0 +1,53 @@
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <?php echo $this->headTitle('BookCloud')->setSeparator(' - ')->setAutoEscape(false) ?>
+
+        <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
+
+        <!-- Le styles -->
+        <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/public/images/favicon.ico'))
+//                        ->prependStylesheet($this->basePath() . '/public/css/bootstrap-responsive.min.css')
+                        ->prependStylesheet($this->basePath() . '/public/css/style.css')
+                        ->prependStylesheet($this->basePath() . '/public/css/phoca-flags.css')
+                        ->prependStylesheet($this->basePath() . '/public/BS3/css/bootstrap.min.css') ?>
+
+        <!-- Scripts -->
+        <?php echo $this->headScript()->prependFile($this->basePath() . '/public/js/html5.js', 'text/javascript', array('conditional' => 'lt IE 9',))
+                                      ->prependFile($this->basePath() . '/public/BS3/js/bootstrap.min.js')
+                                      ->prependFile($this->basePath() . '/public/js/jquery.min.js') ?>
+
+    </head>
+    <body>
+        <div class="container">
+
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"  style="font-size: 16px; font-weight:bold;">
+                            Set your new password
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-8 col-md-offset-2">
+                                    <form id="changePasswordForm" action="<?php echo $this->url('application/default', array('controller' => 'user', 'action' => 'lostPassword')) ?>" method="post" enctype="multipart/form-data">
+                                        <input type="hidden" name="token" value="<?php echo $token; ?>">
+                                        <div class="form-group" id="passwordGroup">
+                                            <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="New Password">
+                                        </div>
+                                        <div class="form-group" id="password2Group">
+                                            <input type="password" class="form-control" id="newPassword2" name="newPassword2" placeholder="Retype new Password">
+                                        </div>
+                                        <button class="btn btn-default pull-right" type="button" onclick="validate()">Submit</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </body>
+</html>

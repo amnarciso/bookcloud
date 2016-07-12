@@ -7,6 +7,7 @@ use Zend\View\Model\ViewModel;
 use Zend\Session\Container;
 
 use Application\Model\Users;
+use Application\Model\Newpass;
 
 /**
  * ConfigController
@@ -115,5 +116,28 @@ class AdminController extends AbstractActionController {
             'action'     => 'index'
             ));
 
+    }
+
+    public function newpassAction() {
+        //Redirecting if not a logged admin
+        if ((!$this->logged) || (!$this->user->admin))
+            return $this->redirect()->toRoute('application/default', array(
+                'controller' => 'index',
+                'action'     => 'index'
+                ));
+        
+        //Initiate variables
+        $sm = $this->getServiceLocator();
+        $newpass = new Newpass($sm);
+        $userId = (int) $this->params()->fromRoute('id', 0);
+        
+        //Create newpass hash for user
+        $newpass->generate($userId);
+
+        //Redirect to home
+        return $this->redirect()->toRoute('application/default', array(
+            'controller' => 'index',
+            'action'     => 'index'
+            ));
     }
 }

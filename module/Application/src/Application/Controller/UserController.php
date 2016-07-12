@@ -6,6 +6,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Session\Container;
 
 use Application\Model\Users;
+use Application\Model\Newpass;
 
 /**
  * User controller defines all actions for handling users
@@ -103,6 +104,42 @@ class UserController extends AbstractActionController
         //EDITA E ATUALIZA USER
         $user_session->user->weeklynews = ($subscriptions['weeklynews'] ? 1 : 0);
         $users->update($user_session->user);
+
+        //Return to config
+        return $this->redirect()->toRoute('application/default', array(
+            'controller' => 'index',
+            'action'     => 'index'
+            ));
+    }
+
+    public function lostPasswordAction()
+    {
+        //Initialize variables
+        $sm = $this->getServiceLocator();
+        $users = new Users($sm);
+        $newpass = new Newpass($sm);
+        $user_session = new Container('user');
+
+        //Get parameters
+        $request = $this->getRequest($sm);
+        $newPassword = $request->getPost('newPassword');
+        $token = $request->getPost('token');
+
+        //Redirecting if token is not valid
+        $user_id = $newpass->checkHash($token);
+
+
+
+
+        
+        if (!$user_session->logged)
+            return $this->redirect()->toRoute('application/default', array(
+                'controller' => 'index',
+                'action'     => 'index'
+                ));
+
+        //Set new password
+        $users->setPassword($user_session->user->user_id, $newPassword);
 
         //Return to config
         return $this->redirect()->toRoute('application/default', array(

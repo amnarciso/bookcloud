@@ -68,4 +68,17 @@ class ConfigController extends AbstractActionController {
             'action'     => 'index'
             ));       
     }
+
+    public function newpassAction() {
+        //Initiate variables
+        $token = $this->params()->fromRoute('id', 0);
+
+        //Load view
+        $view = new ViewModel(array(
+            'user' => $this->user,
+            'token' => $token,
+        ));
+        $view->setTerminal(true);
+        return $view;
+    }
 }
